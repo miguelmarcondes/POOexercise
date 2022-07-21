@@ -1,11 +1,11 @@
 <?php
 
-namespace Alura\Calisthenics\Domain\Video;
+namespace Miguel\Calisthenics\Domain\Video;
 
-use Alura\Calisthenics\Domain\Student\Student;
+use Miguel\Calisthenics\Domain\Student\Student;
 
 interface VideoRepository
 {
-    public function add(Video $video): void;
+    public function add(Video $video): self;
     public function videosFor(Student $student): array;
 }

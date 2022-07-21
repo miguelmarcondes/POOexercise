@@ -1,44 +1,36 @@
 <?php
 
-namespace Alura\Calisthenics\Domain\Student;
+namespace Miguel\Calisthenics\Domain\Student;
 
-use Alura\Calisthenics\Domain\Video\Video;
-use Alura\Calisthenics\Domain\Email\Email;
+use Miguel\Calisthenics\Domain\Video\Video;
+use Miguel\Calisthenics\Domain\Email\Email;
 use DateTimeInterface;
-use Ds\Map;
 
 class Student
 {
-    private string $email;
-    private DateTimeInterface $bd;
-    private Map $watchedVideos;
-    private string $fName;
-    private string $lName;
-    public string $street;
-    public string $number;
-    public string $province;
-    public string $city;
-    public string $state;
-    public string $country;
+    private Email $email;
+    private DateTimeInterface $birthDate;
+    private watchedVideos $watchedVideos;
+    private FullName $FullName;
+    private FullAddress $FullAddress;
 
-    public function __construct(Email $email, DateTimeInterface $bd, string $fName, string $lName, string $street, string $number, string $province, string $city, string $state, string $country)
+    public function __construct(Email $email, DateTimeInterface $birthDate, FullName $FullName, FullAddress $FullAddress)
     {
-        $this->watchedVideos = new Map();
-        $this->setEmail($email);
-        $this->bd = $bd;
-        $this->fName = $fName;
-        $this->lName = $lName;
-        $this->street = $street;
-        $this->number = $number;
-        $this->province = $province;
-        $this->city = $city;
-        $this->state = $state;
-        $this->country = $country;
+        $this->watchedVideos = new watchedVideos();
+        $this->$email = $email;
+        $this->birthDate = $birthDate;
+        $this->FullAddress = $FullAddress;
+        $this->FullName = $FullName;
     }
 
     public function getFullName(): string
     {
-        return "{$this->fName} {$this->lName}";
+        return $this->FullName;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->FullAddress;
     }
 
     public function getEmail(): string
@@ -48,12 +40,12 @@ class Student
 
     public function getBd(): DateTimeInterface
     {
-        return $this->bd;
+        return $this->birthDate;
     }
 
     public function watch(Video $video, DateTimeInterface $date)
     {
-        $this->watchedVideos->put($video, $date);
+        $this->watchedVideos->add($video, $date);
     }
 
     public function hasAccess(): bool
@@ -62,12 +54,17 @@ class Student
             return true;     
         }
 
-        $this->watchedVideos->sort(fn (DateTimeInterface $dateA, DateTimeInterface $dateB) => $dateA <=> $dateB);
-        /** @var DateTimeInterface $firstDate */
-        $firstDate = $this->watchedVideos->first()->value;
+        $firstDate = $this->watchedVideos->dateOfFirstVideo();
         $today = new \DateTimeImmutable();
 
-        return $firstDate->diff($today)->days < 90;; 
+        return $firstDate->diff($today)->days < 90;
     }
 
+    public function age(): int
+    {
+        $today = new \DateTimeImmutable();
+        $dateInterval = $this->birthDate->diff($today);
+
+        return $dateInterval->y;
+    }
 }

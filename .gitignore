@@ -3,5 +3,3 @@ vendor
 .phpunit.result.cache
 regras.md
 phpunit.xml
-composer.json
-composer.lock

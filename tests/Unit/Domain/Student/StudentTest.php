@@ -1,10 +1,12 @@
 <?php
 
-namespace Alura\Calisthenics\Tests\Unit\Domain\Student;
+namespace Miguel\Calisthenics\Tests\Unit\Domain\Student;
 
-use Alura\Calisthenics\Domain\Email\Email;
-use Alura\Calisthenics\Domain\Student\Student;
-use Alura\Calisthenics\Domain\Video\Video;
+use Miguel\Calisthenics\Domain\Email\Email;
+use Miguel\Calisthenics\Domain\Student\FullAddress;
+use Miguel\Calisthenics\Domain\Student\FullName;
+use Miguel\Calisthenics\Domain\Student\Student;
+use Miguel\Calisthenics\Domain\Video\Video;
 use PHPUnit\Framework\TestCase;
 
 class StudentTest extends TestCase
@@ -16,15 +18,24 @@ class StudentTest extends TestCase
         $this->student = new Student(
             new Email('email@example.com'),
             new \DateTimeImmutable('1997-10-15'),
-            'Vinicius',
-            'Dias',
-            'Rua de Exemplo',
+            new FullName('Miguel', 'Marcondes'),
+            new FullAddress('Rua de Exemplo',
             '71B',
             'Meu Bairro',
             'Minha Cidade',
             'Meu estado',
-            'Brasil'
+            'Brasil')
         );
+    }
+
+    public function testFullAddressMustBeRepresentedAsString()
+    {
+        self::assertEquals('Rua de Exemplo, 71B, Meu Bairro - Minha Cidade, Meu estado, Brasil', $this->student->getAddress());
+    }
+
+    public function testFullNameMustBeRepresentedAsString()
+    {
+        self::assertEquals('Miguel Marcondes', $this->student->getFullName());
     }
 
     public function testStudentWithoutWatchedVideosHasAccess()

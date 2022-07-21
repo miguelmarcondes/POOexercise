@@ -1,6 +1,6 @@
 <?php
 
-namespace Alura\Calisthenics\Domain\Video;
+namespace Miguel\Calisthenics\Domain\Video;
 
 class Video
 {
@@ -19,7 +19,7 @@ class Video
 
     public function checkIfVisibilityIsValidAndUpdateIt(int $visibility): void
     {
-        if (!in_array($visibility, [self::PUBLIC, self::PRIVATE])) {
+        if (!in_array($visibility, [false, true])) {
             throw new \InvalidArgumentException('Invalid visibility');
         }
         

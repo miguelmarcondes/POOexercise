@@ -1,21 +1,25 @@
 <?php
 
-namespace Alura\Calisthenics\Domain\Video;
+namespace Miguel\Calisthenics\Domain\Video;
 
-use Alura\Calisthenics\Domain\Student\Student;
+use Miguel\Calisthenics\Domain\Student\Student;
 
 class InMemoryVideoRepository implements VideoRepository
 {
     private array $videos;
 
-    public function add(Video $video): void
+    public function add(Video $video): self
     {
         $this->videos[] = $video;
+        
+        return $this;
     }
 
     public function videosFor(Student $student): array
     {
-        $today = new \DateTimeImmutable();
-        return array_filter($this->videos, fn (Video $video) => $video->getAgeLimit() <= $student->getBd()->diff($today)->y);
+        return array_filter(
+            $this->videos, 
+            fn (Video $video) => $video->getAgeLimit() <= $student->age()
+        );
     }
 }

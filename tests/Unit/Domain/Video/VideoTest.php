@@ -1,8 +1,8 @@
 <?php
 
-namespace Alura\Calisthenics\Tests\Unit\Domain\Video;
+namespace Miguel\Calisthenics\Tests\Unit\Domain\Video;
 
-use Alura\Calisthenics\Domain\Video\Video;
+use Miguel\Calisthenics\Domain\Video\Video;
 use PHPUnit\Framework\TestCase;
 
 class VideoTest extends TestCase
